@@ -1,6 +1,8 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { PurchaseOrdersController } from './purchase-orders.controller';
 import { PurchaseOrdersService } from './purchase-orders.service';
+import { NotFoundError } from 'rxjs';
+import { NotFoundException } from '@nestjs/common';
 
 describe('PurchaseOrdersController', () => {
   let purchaseOrdersController: PurchaseOrdersController;
@@ -94,13 +96,12 @@ describe('PurchaseOrdersController', () => {
       expect(mockPurchaseOrdersService.findOne).toBeCalledTimes(1);
     });
 
-    it('should return null if puchase order does not exist', async () => {
+    it('should throw exception if puchase order does not exist', async () => {
       mockPurchaseOrdersService.findOne.mockResolvedValue(null);
 
       const invalidId = 111;
 
-      const result = await purchaseOrdersController.findOne(invalidId.toString());
-      expect(result).toBeNull();
+      await expect(purchaseOrdersController.findOne(invalidId.toString())).rejects.toBeInstanceOf(NotFoundException);
       expect(mockPurchaseOrdersService.findOne).toBeCalledTimes(1);
     });
   });

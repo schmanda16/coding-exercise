@@ -1,4 +1,4 @@
-import { Controller, Get, Param } from '@nestjs/common';
+import { Controller, Get, NotFoundException, Param } from '@nestjs/common';
 import { PurchaseOrders } from '@prisma/client';
 import { PurchaseOrdersService } from './purchase-orders.service';
 
@@ -12,7 +12,11 @@ export class PurchaseOrdersController {
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string): Promise<PurchaseOrders> {
-    return this.purchaseOrdersService.findOne(+id);
+  async findOne(@Param('id') id: string): Promise<PurchaseOrders> {
+    const purchaseOrder = await this.purchaseOrdersService.findOne(+id);
+    if (!purchaseOrder) {
+      throw new NotFoundException(`Purchase Order with id ${id} does not exist.`);
+    }
+    return purchaseOrder;
   }
 }

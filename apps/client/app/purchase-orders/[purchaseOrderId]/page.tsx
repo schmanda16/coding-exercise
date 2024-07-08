@@ -1,6 +1,8 @@
 import moment from 'moment';
 import React from 'react';
 import Currency from '../../components/Currency';
+import { notFound } from 'next/navigation';
+
 
 interface Props {
   params: {
@@ -32,7 +34,7 @@ async function getPurchaseOrderById(id: number): Promise<PurchaseOrder> {
     cache: 'no-cache',
   });
   if (!res.ok) {
-    throw new Error('Failed to fetch data');
+    notFound();
   }
 
   const body = res.json();
