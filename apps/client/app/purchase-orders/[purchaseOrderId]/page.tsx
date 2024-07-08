@@ -8,12 +8,6 @@ interface Props {
   };
 }
 
-interface Item {
-  id: number;
-  name: string;
-  sku: string;
-}
-
 interface PurchaseOrderLineItem {
   id: number;
   item_id: number;
@@ -59,8 +53,7 @@ export default async function PurchaseOrderDetailsPage({
         Order Date: {moment(purchaseOrder.order_date).format('YYYY-MM-DD')}
       </div>
       <div>
-        Expected Delivery Date:{' '}
-        {moment(purchaseOrder.expected_delivery_date).format('YYYY-MM-DD')}
+        Expected Delivery Date: {moment(purchaseOrder.expected_delivery_date).format('YYYY-MM-DD')}
       </div>
 
       <h2 className='text-xl m-5'>Line Items</h2>
